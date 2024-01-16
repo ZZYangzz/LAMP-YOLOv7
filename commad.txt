@@ -1,0 +1,314 @@
+########################## prune yolov7-tiny.yaml ##########################
+nohup python train.py --weights yolov7-tiny.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny.yaml --epochs 200 --cache-images --batch-size 64 \
+    --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny > logs/yolov7_tiny.log 2>&1 & tail -f logs/yolov7_tiny.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_slim_exp1 \
+    --prune_method slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_slim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_slim_exp2 \
+    --prune_method slim --speed_up 4.0 --sl_model runs/train/yolov7_tiny_slim_exp1_sl/weights/best_sl_0.387.pt  > logs/yolov7_tiny_slim_exp2.log 2>&1 & tail -f logs/yolov7_tiny_slim_exp2.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_groupslim_exp1 \
+    --prune_method group_slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_group slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_groupslim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_groupslim_exp2 \
+    --prune_method group_slim --speed_up 4.0 --sl_model runs/train/yolov7_tiny_groupslim_exp1_sl/weights/best_sl_0.389.pt > logs/yolov7_tiny_groupslim_exp2.log 2>&1 & tail -f logs/yolov7_tiny_groupslim_exp2.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_groupnorm_exp1 \
+    --prune_method group_norm --speed_up 2.0 > logs/yolov7_tiny_groupnorm_exp1.log 2>&1 & tail -f logs/yolov7_tiny_groupnorm_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_l1_exp1 \
+    --prune_method l1 --speed_up 2.0 > logs/yolov7_tiny_l1_exp1.log 2>&1 & tail -f logs/yolov7_tiny_l1_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_random_exp1 \
+    --prune_method random --speed_up 2.0 > logs/yolov7_tiny_random_exp1.log 2>&1 & tail -f logs/yolov7_tiny_random_exp1.log
+
+python test.py --weights runs/train/yolov7_tiny_slim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_slim_exp1
+python test.py --weights runs/train/yolov7_tiny_slim_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_slim_exp2
+python test.py --weights runs/train/yolov7_tiny_groupslim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_groupslim_exp1
+python test.py --weights runs/train/yolov7_tiny_groupslim_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_groupslim_exp2
+python test.py --weights runs/train/yolov7_tiny_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_groupnorm_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_groupnorm_exp1
+python test.py --weights runs/train/yolov7_tiny_l1_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_l1_exp1
+python test.py --weights runs/train/yolov7_tiny_random_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_random_exp1
+
+########################## prune yolov7-tiny-prune.yaml ##########################
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny-prune.yaml --epochs 300 --cache-images --batch-size 64 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom > logs/yolov7_tiny_custom.log 2>&1 & tail -f logs/yolov7_tiny_custom.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_slim_exp1 \
+    --prune_method slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_slim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_groupslim_exp1 \
+    --prune_method group_slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_groupslim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_groupslim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_custom_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_l1_exp1 \
+    --prune_method l1 --speed_up 1.5 > logs/yolov7_tiny_custom_l1_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_l1_exp1.log
+
+# nan
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_groupnorm_exp1 \
+    --prune_method group_norm --speed_up 1.5 > logs/yolov7_tiny_custom_groupnorm_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_groupnorm_exp1.log
+
+python test.py --weights runs/train/yolov7_tiny_custom/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_l1_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_l1_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_slim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_slim_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_groupslim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_groupslim_exp1
+
+########################## prune yolov7-tiny-prune-dcn.yaml ##########################
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny-prune-dcn.yaml --epochs 300 --cache-images --batch-size 64 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_dcn > logs/yolov7_tiny_custom_dcn.log 2>&1 & tail -f logs/yolov7_tiny_custom_dcn.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_dcn/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_dcn_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_custom_dcn_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_dcn_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_dcn/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_dcn_l1_exp1 \
+    --prune_method l1 --speed_up 2.0 > logs/yolov7_tiny_custom_dcn_l1_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_dcn_l1_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_dcn/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_dcn_slim_exp1 \
+    --prune_method slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_dcn_slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_dcn_slim_exp1.log
+
+# error
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_dcn/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_dcn_groupslim_exp1 \
+    --prune_method group_slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_dcn_groupslim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_dcn_groupslim_exp1.log
+
+python test.py --weights runs/train/yolov7_tiny_custom_dcn/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_dcn
+python test.py --weights runs/train/yolov7_tiny_custom_dcn_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_dcn_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_dcn_l1_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_dcn_l1_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_dcn_slim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_dcn_slim_exp1
+
+########################## prune yolov7-tiny-fasternet.yaml ##########################
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny-fasternet.yaml --epochs 300 --cache-images --batch-size 64 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_fasternet > logs/yolov7_tiny_custom_fasternet.log 2>&1 & tail -f logs/yolov7_tiny_custom_fasternet.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_fasternet_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_custom_fasternet_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_fasternet_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_fasternet_slim_exp1 \
+    --prune_method slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_fasternet_slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_fasternet_slim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_fasternet_groupslim_exp1 \
+    --prune_method group_slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_fasternet_groupslim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_fasternet_groupslim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 64 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_fasternet_groupnorm_exp1 \
+    --prune_method group_norm --speed_up 2.0 > logs/yolov7_tiny_custom_fasternet_groupnorm_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_fasternet_groupnorm_exp1.log
+
+python test.py --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_fasternet
+python test.py --weights runs/train/yolov7_tiny_custom_fasternet_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_fasternet_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_fasternet_slim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_fasternet_slim_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_fasternet_groupslim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_fasternet_groupslim_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_fasternet_groupnorm_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_fasternet_groupnorm_exp1
+
+python latency.py --weights runs/train/yolov7_tiny_custom_fasternet/weights/best.pt --batch 32 --imgs 640 640 --device 0 --half
+python latency.py --weights runs/train/yolov7_tiny_custom_fasternet_slim_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0 --half
+
+########################## prune yolov7-tiny-rexnet.yaml ##########################
+
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny-rexnet.yaml --epochs 300 --cache-images --batch-size 32 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_rexnet > logs/yolov7_tiny_custom_rexnet.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_rexnet_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_custom_rexnet_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_rexnet_lamp_exp2 \
+    --prune_method lamp --speed_up 1.5 > logs/yolov7_tiny_custom_rexnet_lamp_exp2.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_lamp_exp2.log
+
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_lamp_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_lamp_exp2
+
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_lamp_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_lamp_exp2/weights/best.pt --batch 32 --imgs 640 640 --device 0
+
+########################## prune yolov7-tiny-rexnet-decoupled.yaml ##########################
+
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --cfg cfg/training/yolov7-tiny-rexnet-decoupled.yaml --epochs 300 --cache-images --batch-size 32 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_rexnet_decoupled > logs/yolov7_tiny_custom_rexnet_decoupled.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_custom_rexnet_decoupled_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_custom_rexnet_decoupled_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 16 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_custom_rexnet_decoupled_slim_exp1 \
+    --prune_method slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_rexnet_decoupled_slim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_slim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 16 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1 \
+    --prune_method group_slim --speed_up 2.0 --reg 5e-3 --sl_epochs 300  > logs/yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 16 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1 \
+    --prune_method group_sl --speed_up 2.0 --reg 3e-4 --sl_epochs 200  > logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 16 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2 \
+    --prune_method group_sl --speed_up 2.0 --reg 4e-4 --sl_epochs 500  > logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt \
+    --epochs 200 --cache-images --batch-size 16 --hyp data/hyp.scratch.tiny.yaml --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3 \
+    --prune_method group_sl --speed_up 3.0 --sl_model runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2_sl/weights/best_sl_0.667.pt  > logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3.log 2>&1 & tail -f logs/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3.log
+
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_slim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_slim_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2
+python test.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_crowdhuman/data_exp.yaml --batch-size 32 --name yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3
+
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_lamp_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_slim_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupslim_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp2/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_custom_rexnet_decoupled_groupsl_exp3/weights/best.pt --batch 32 --imgs 640 640 --device 0
+
+########################## distill and prune yolov7-tiny.yaml ##########################
+
+nohup python train.py --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --cfg cfg/training/yolov7-tiny.yaml --weights yolov7-tiny.pt --epochs 300 --cache-images --batch-size 32 \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny > logs/yolov7_tiny.log 2>&1 & tail -f logs/yolov7_tiny.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 300 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_lamp_exp1 \
+    --prune_method lamp --speed_up 2.0 > logs/yolov7_tiny_lamp_exp1.log 2>&1 & tail -f logs/yolov7_tiny_lamp_exp1.log
+
+nohup python compress.py --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --weights runs/train/yolov7_tiny/weights/best.pt \
+    --epochs 300 --cache-images --batch-size 32 --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_lamp_exp2 \
+    --prune_method lamp --speed_up 3.0 > logs/yolov7_tiny_lamp_exp2.log 2>&1 & tail -f logs/yolov7_tiny_lamp_exp2.log
+
+nohup python train_distill.py --weights runs/train/yolov7_tiny_lamp_exp2/weights/prune.pt --prune_model --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --epochs 300 --cache-images --batch-size 32 \
+    --teacher_weights runs/train/yolov7_tiny/weights/best.pt --teacher_cfg cfg/training/yolov7-tiny.yaml \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_lamp_cwd_exp1 --kd_loss_type feature  --kd_loss_decay constant  \
+    --feature_loss_ratio 0.05 --feature_loss_type cwd --teacher_kd_layers 47,57,65,73 --student_kd_layers 47,57,65,73 \
+    > logs/yolov7_tiny_lamp_cwd_exp1.log 2>&1 & tail -f logs/yolov7_tiny_lamp_cwd_exp1.log
+
+nohup python train_distill.py --weights runs/train/yolov7_tiny_lamp_exp2/weights/prune.pt --prune_model --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --epochs 300 --cache-images --batch-size 32 \
+    --teacher_weights runs/train/yolov7_tiny/weights/best.pt --teacher_cfg cfg/training/yolov7-tiny.yaml \
+    --hyp data/hyp.scratch.noota.yaml --name yolov7_tiny_lamp_cwd_exp2 --kd_loss_type feature  --kd_loss_decay constant  \
+    --feature_loss_ratio 0.1 --feature_loss_type cwd --teacher_kd_layers 47,57,65,73 --student_kd_layers 47,57,65,73 \
+    > logs/yolov7_tiny_lamp_cwd_exp2.log 2>&1 & tail -f logs/yolov7_tiny_lamp_cwd_exp2.log
+
+python test.py --weights runs/train/yolov7_tiny/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --batch-size 32 --task test --name yolov7_tiny
+python test.py --weights runs/train/yolov7_tiny_lamp_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --batch-size 32 --task test --name yolov7_tiny_lamp_exp1
+python test.py --weights runs/train/yolov7_tiny_lamp_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --batch-size 32 --task test --name yolov7_tiny_lamp_exp2
+python test.py --weights runs/train/yolov7_tiny_lamp_cwd_exp1/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --batch-size 32 --task test --name yolov7_tiny_lamp_cwd_exp1
+python test.py --weights runs/train/yolov7_tiny_lamp_cwd_exp2/weights/best.pt --data /home/hjj/Desktop/dataset/dataset_visdrone/data_exp.yaml --batch-size 32 --task test --name yolov7_tiny_lamp_cwd_exp2
+
+python latency.py --weights runs/train/yolov7_tiny/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_lamp_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_lamp_exp2/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_lamp_cwd_exp1/weights/best.pt --batch 32 --imgs 640 640 --device 0
+python latency.py --weights runs/train/yolov7_tiny_lamp_cwd_exp2/weights/best.pt --batch 32 --imgs 640 640 --device 0
+
+python plot_channel_image.py --base-weights runs/train/yolov7_tiny/weights/best.pt  --prune-weights runs/train/yolov7_tiny_lamp_exp2/weights/best.pt
+
+# 环境
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple torch-pruning==1.2.5 thop
+
+# 使用dyhead需要安装以下 安装不成功使用dyhead会报错
+pip install -U openmim
+mim install mmengine
+mim install "mmcv>=2.0.0"
+
+视频百度云链接:
+
+1. 原yolov7-tiny, yolov7-tiny+mobilenetv3+LSKBlock+TSCODE+RepConv, yolov7-tiny+Yolov7_Tiny_E_ELAN_DCN+AFPN
+链接：https://pan.baidu.com/s/1n7Y7Ec93jeznJM6XGb20Yg?pwd=vjpd 
+提取码：vjpd 
+
+2. yolov7-tiny+FasterNet+DBB
+链接：https://pan.baidu.com/s/19HycIie3sa2lEj0HMF5jeA?pwd=s066 
+提取码：s066 
+
+3. yolov7-tiny+ReXNet+VoVGSCSP+DyHead+DecoupledHead
+链接：https://pan.baidu.com/s/1ycaI3COdqS6eTvEYR3xNpQ?pwd=ctxf 
+提取码：ctxf 
+
+我自己实验的runs和logs百度云链接(按顺序看):
+
+1. 原yolov7-tiny, yolov7-tiny+mobilenetv3+LSKBlock+TSCODE+RepConv, yolov7-tiny+Yolov7_Tiny_E_ELAN_DCN+AFPN
+链接：https://pan.baidu.com/s/1uvm3mm7JpU_qkXou04QCIw?pwd=uruh 
+提取码：uruh
+
+2. yolov7-tiny+FasterNet+DBB
+链接：https://pan.baidu.com/s/1qhIWLXGaUzlP8bIsZD9Jtw?pwd=4qx3 
+提取码：4qx3 
+
+3. yolov7-tiny+ReXNet+VoVGSCSP+DyHead+DecoupledHead
+链接：https://pan.baidu.com/s/1RUHe0uANhg6c9SGeKpbLrQ?pwd=01go 
+提取码：01go 
+
+------------------------------BiliBili 魔鬼面具up主------------------------------
+蒸馏相关：
+
+V7蒸馏第一个需要看的视频!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+链接：https://pan.baidu.com/s/1JlSZApvfqnJY2nLSRJJQEA?pwd=kfrp 
+提取码：kfrp 
+
+1. 蒸馏使用教程
+链接：https://pan.baidu.com/s/1LzWJkYgDzTfECczHYF6JDw?pwd=7068 
+提取码：7068 
+
+2. 蒸馏实验数据runs和logs
+链接：https://pan.baidu.com/s/1dY0a5hwFvqN02YJ9DulaDg?pwd=elqk 
+提取码：elqk 
+
+3. 蒸馏小技巧
+链接：https://pan.baidu.com/s/1XePqAbHt1pjDKmBbXubLow?pwd=c2ig 
+提取码：c2ig 
+
+------------------------------BiliBili 魔鬼面具up主------------------------------
+更新视频说明：
+
+-----20230926-----
+1. RepConv补充
+2. 通道对比图说明
+3. 推理时间脚本更新说明
+链接：https://pan.baidu.com/s/1Q-6cGFKmcB4MSSk95mvqjQ?pwd=ijf9 
+提取码：ijf9 
+
+-----20231006-----
+1. 更新compress.py中稀疏训练的reg衰减方式
+2. 更新稀疏训练中训练结束后计算map的模型选择规则
+链接：https://pan.baidu.com/s/1-JlNqWV0FdvkHCbI9tK2pQ?pwd=gl97 
+提取码：gl97  
+
+-----20231012-----
+1. 支持更换backbone后进行知识蒸馏
+2. 提供C2f-Faster转换示例
+链接：https://pan.baidu.com/s/1BZ9RRn9v_DJOVXqslvN0FA?pwd=07o2 
+提取码：07o2 
+
+
